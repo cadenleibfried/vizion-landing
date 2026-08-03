@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIZION | Pay Only For Appointments That Show Up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f4ee; --paper2:#efece3; --ink:#101317; --ink2:#191d23;
+    --dim:#565b63; --faint:#8a8f98; --dim-on-ink:#aab0b9;
+    --line:rgba(16,19,23,.12); --line-strong:rgba(16,19,23,.25);
+    --line-inv:rgba(246,244,238,.14);
+    --accent:#5b4ee8; --accent-ink:#4638c9; --accent-soft:rgba(91,78,232,.09);
+    --good:#178a4c; --bad:#c62f2f;
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Schibsted Grotesk",-apple-system,Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px;position:relative}
+  ::selection{background:var(--accent);color:#fff}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .rv.in{opacity:1;transform:none}
+
+  /* nav */
+  .top{position:sticky;top:0;z-index:50;background:rgba(246,244,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .top .row{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+  .brand{font-family:var(--mono);font-weight:600;letter-spacing:.22em;font-size:14px}
+  .brand em{font-style:normal;color:var(--accent)}
+  .logo{height:38px;display:block}
+  .btn{display:inline-block;background:var(--ink);color:var(--paper);text-decoration:none;font-weight:800;
+    font-size:15px;padding:12px 24px;border-radius:8px;border:2px solid var(--ink);transition:transform .15s ease, background .15s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.acc{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.acc:hover{background:var(--accent-ink)}
+  .btn.big{font-size:17px;padding:16px 34px;border-radius:10px}
+  .micro{margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+
+  /* hero */
+  .hero{padding:76px 0 40px;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+  .kicker{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);border:1.5px solid var(--accent);border-radius:4px;padding:7px 12px;margin-bottom:26px}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:62px;line-height:1.02;letter-spacing:-.015em}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero .sub{margin-top:24px;max-width:520px;font-size:18.5px;color:var(--dim)}
+  .hero .sub b{color:var(--ink);font-weight:700}
+  .hero .cta{margin-top:32px}
+
+  /* phone */
+  .phone-stage{position:relative;display:flex;justify-content:center}
+  .phone{width:340px;background:var(--ink);border-radius:30px;padding:16px 14px 20px;transform:rotate(2.5deg);
+    box-shadow:24px 34px 60px rgba(16,19,23,.28)}
+  .ph-top{display:flex;justify-content:space-between;align-items:center;padding:0 6px 12px;border-bottom:1px solid var(--line-inv)}
+  .ph-top .who{font-size:12.5px;color:var(--dim-on-ink);font-family:var(--mono)}
+  .live{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:#fff;background:var(--accent);padding:3px 8px;border-radius:99px}
+  .msgs{padding:14px 4px 0;display:flex;flex-direction:column;gap:9px}
+  .msg{max-width:86%;padding:10px 13px;border-radius:14px;font-size:13.5px;line-height:1.4}
+  .msg.sys{align-self:center;color:var(--dim-on-ink);font-family:var(--mono);font-size:10.5px;padding:2px}
+  .msg.in{align-self:flex-start;background:#2a2f37;color:#eef0f3;border-bottom-left-radius:4px}
+  .msg.out{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+  .msg .t{display:block;font-family:var(--mono);font-size:9.5px;opacity:.7;margin-top:4px}
+  .msg{opacity:0;transform:translateY(8px);animation:pop .5s ease forwards}
+  @keyframes pop{to{opacity:1;transform:none}}
+
+  /* ticker */
+  .ticker{background:var(--ink);color:var(--paper);overflow:hidden;padding:13px 0;border-top:1px solid var(--ink);white-space:nowrap}
+  .ticker .in{display:inline-block;animation:tick 26s linear infinite;font-family:var(--mono);font-size:13px;letter-spacing:.12em}
+  .ticker span{margin:0 18px}
+  .ticker b{color:var(--accent);font-weight:600;background:none}
+  @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* section scaffolding */
+  .sec{padding:84px 0 0;position:relative}
+  .num{position:absolute;top:52px;left:-8px;font-family:var(--serif);font-size:120px;font-weight:700;color:transparent;
+    -webkit-text-stroke:1.5px var(--line-strong);line-height:1;user-select:none}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px}
+  .sec h2{font-family:var(--serif);font-weight:600;font-size:42px;line-height:1.06;letter-spacing:-.01em;max-width:640px}
+  .sec h2 em{font-style:italic;color:var(--accent)}
+  .sec .sub{color:var(--dim);font-size:17px;margin-top:14px;max-width:560px}
+  .pad{padding-left:96px}
+  .cta-row{margin-top:38px}
+
+  /* ledger compare */
+  .ledger{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:44px;border:1.5px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff}
+  .ledger .col{padding:30px 32px}
+  .ledger .col.old{background:var(--paper2);border-right:1.5px solid var(--ink)}
+  .ledger .cap{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:18px}
+  .ledger .old .cap{color:var(--bad)}
+  .ledger .new .cap{color:var(--accent)}
+  .ledger .li{padding:11px 0;border-bottom:1px dashed var(--line);font-size:15.5px}
+  .ledger .li:last-child{border-bottom:none}
+  .ledger .old .li{color:var(--faint);text-decoration:line-through;text-decoration-color:rgba(198,47,47,.55);text-decoration-thickness:1.5px}
+  .ledger .new .li{color:var(--ink)}
+  .ledger .new .li b{color:var(--accent)}
+
+  /* steps */
+  .steps{margin-top:44px}
+  .step{display:grid;grid-template-columns:110px 1fr;gap:26px;padding:30px 0;border-top:1.5px solid var(--ink);align-items:start}
+  .step:last-child{border-bottom:1.5px solid var(--ink)}
+  .step .sn{font-family:var(--serif);font-size:54px;font-weight:700;color:var(--accent);line-height:1}
+  .step h3{font-family:var(--serif);font-size:24px;font-weight:600;margin-bottom:6px}
+  .step p{color:var(--dim);font-size:16px;max-width:560px}
+  .step p b{color:var(--ink)}
+  .step .tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
+
+  /* contract */
+  .contract{margin-top:44px;background:#fff;border:1.5px solid var(--ink);border-radius:14px;padding:36px 40px;position:relative;
+    box-shadow:10px 12px 0 var(--accent-soft)}
+  .contract .head{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);
+    display:flex;justify-content:space-between;border-bottom:1.5px solid var(--ink);padding-bottom:12px;margin-bottom:8px}
+  .clause{display:grid;grid-template-columns:64px 1fr;gap:18px;padding:16px 0;border-bottom:1px dashed var(--line)}
+  .clause:last-child{border-bottom:none}
+  .clause .cn{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent)}
+  .clause .cd{font-size:15.5px;color:var(--dim)}
+  .clause .cd b{color:var(--ink)}
+
+  /* receipt */
+  .receipt-stage{display:flex;justify-content:center;margin-top:48px}
+  .receipt{width:400px;background:#fff;border-radius:6px;padding:26px 28px 20px;transform:rotate(-1.6deg);
+    font-family:var(--mono);font-size:13.5px;color:#222;box-shadow:16px 24px 44px rgba(16,19,23,.22);
+    border-top:6px solid var(--accent)}
+  .receipt .rh{text-align:center;letter-spacing:.2em;font-weight:600;font-size:12px;border-bottom:1.5px dashed #bbb;padding-bottom:12px;margin-bottom:12px}
+  .receipt .li{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dotted #ddd}
+  .receipt .li span:last-child{font-weight:600}
+  .receipt .li.zero span:last-child{color:var(--good)}
+  .receipt .tot{display:flex;justify-content:space-between;padding-top:12px;font-weight:600;font-size:14.5px}
+  .receipt .note{margin-top:12px;font-size:11px;color:#888;text-align:center;font-style:italic;font-family:var(--sans)}
+  .receipt .bars{margin-top:14px;height:30px;background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 5px,#111 5px 6px,transparent 6px 11px)}
+
+  /* dark band generic */
+  .band{background:var(--ink);color:var(--paper);margin-top:84px;padding:76px 0}
+  .band .eyebrow{color:var(--accent)}
+  .band h2{font-family:var(--serif);font-weight:600;font-size:42px;line-height:1.06;max-width:660px}
+  .band h2 em{font-style:italic;color:var(--accent)}
+  .band .sub{color:var(--dim-on-ink);font-size:17px;margin-top:14px;max-width:560px}
+  .bigstat{display:flex;gap:36px;align-items:baseline;margin-top:40px;flex-wrap:wrap}
+  .bigstat .b{font-family:var(--serif);font-size:96px;font-weight:700;color:var(--accent);line-height:1}
+  .bigstat .d{max-width:380px;color:var(--dim-on-ink);font-size:16.5px}
+  .bigstat .d b{color:var(--paper)}
+  .mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--line-inv);border:1px solid var(--line-inv);border-radius:12px;overflow:hidden;margin-top:44px}
+  .ms{background:var(--ink2);padding:22px 24px}
+  .ms .v{font-family:var(--serif);font-size:32px;font-weight:700;color:var(--paper)}
+  .ms .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--dim-on-ink);margin-top:6px;text-transform:uppercase}
+
+  /* fit */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:44px}
+  .fit .col{border-radius:14px;padding:30px 32px;background:#fff;border:1.5px solid var(--ink)}
+  .fit .col.no{background:var(--paper2);border-style:dashed;border-color:var(--line-strong)}
+  .fit .cap{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin-bottom:16px}
+  .fit .yes .cap{color:var(--accent)}
+  .fit .no .cap{color:var(--bad)}
+  .fit ul{list-style:none}
+  .fit li{padding:8px 0;font-size:15.5px;color:var(--dim);border-bottom:1px dashed var(--line)}
+  .fit li:last-child{border-bottom:none}
+  .fit li b{color:var(--ink)}
+
+  /* proof */
+  .proof{margin-top:44px;display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start;background:#fff;
+    border:1.5px solid var(--ink);border-radius:14px;padding:38px 42px;box-shadow:10px 12px 0 var(--accent-soft)}
+  .proof .big{font-family:var(--serif);font-weight:700;font-size:74px;line-height:.95;color:var(--accent)}
+  .proof .big small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--faint);margin-top:10px;text-transform:uppercase}
+  .proof p{font-size:16px;color:var(--dim)}
+  .proof p b{color:var(--ink)}
+  .proof p+p{margin-top:14px}
+
+  /* stamp band */
+  .guar-band{background:var(--accent);color:#fff;margin-top:84px;padding:70px 0}
+  .guar-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+  .guar-band h2{font-family:var(--serif);font-weight:600;font-size:40px;line-height:1.08;max-width:600px}
+  .guar-band .sub{color:rgba(255,255,255,.85);font-size:17px;margin-top:14px;max-width:540px}
+  .guar-band .btn{background:#fff;border-color:#fff;color:var(--accent-ink)}
+  .stamp{width:170px;height:170px;border:3px dashed rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;
+    text-align:center;font-family:var(--mono);font-size:12px;letter-spacing:.16em;line-height:1.6;transform:rotate(-8deg);padding:18px;text-transform:uppercase}
+
+  /* call steps + faq */
+  .cs{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:20px 0;border-bottom:1px dashed var(--line)}
+  .cs:last-child{border-bottom:none}
+  .cs .n{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--accent)}
+  .cs .d{font-size:16px;color:var(--dim)}
+  .cs .d b{color:var(--ink)}
+  .callsteps{margin-top:36px;max-width:660px}
+  .faq{margin-top:40px;max-width:720px}
+  .faq details{border:1.5px solid var(--ink);border-radius:10px;background:#fff;margin-bottom:10px;padding:0 22px}
+  .faq summary{cursor:pointer;font-weight:700;font-size:16.5px;padding:18px 0;list-style:none;display:flex;justify-content:space-between;align-items:center;font-family:var(--sans)}
+  .faq summary::after{content:"+";font-family:var(--serif);color:var(--accent);font-size:26px;font-weight:600}
+  .faq details[open] summary::after{content:"–"}
+  .faq .a{padding:0 0 18px;font-size:15.5px;color:var(--dim)}
+
+  /* booking */
+  .book{padding:84px 0 30px;text-align:center}
+  .book h2{font-family:var(--serif);font-weight:600;font-size:46px;letter-spacing:-.01em}
+  .book h2 em{font-style:italic;color:var(--accent)}
+  .book .sub{color:var(--dim);font-size:17px;margin:14px auto 30px;max-width:520px}
+  .cal-frame{max-width:780px;margin:0 auto;border:1.5px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:10px 12px 0 var(--accent-soft)}
+  .cal-frame iframe{width:100%;height:660px;border:none;display:block}
+
+  footer{border-top:1.5px solid var(--ink);margin-top:64px;padding:26px 0;text-align:center;font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.06em}
+
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr;padding-top:48px;gap:48px}
+    .hero h1{font-size:42px}
+    .sec h2,.band h2{font-size:31px}
+    .pad{padding-left:0}
+    .num{display:none}
+    .ledger,.fit,.guar-grid{grid-template-columns:1fr}
+    .ledger .col.old{border-right:none;border-bottom:1.5px solid var(--ink)}
+    .proof{grid-template-columns:1fr;gap:20px;padding:28px}
+    .mini-stats{grid-template-columns:1fr}
+    .bigstat .b{font-size:64px}
+    .step{grid-template-columns:1fr;gap:8px}
+    .phone{transform:rotate(0);width:100%;max-width:340px}
+    .btn.big{display:block;text-align:center}
+    .stamp{margin:0 auto}
+    .book h2{font-size:32px}
+  }
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="wrap"><div class="row">
+  <img class="logo" src="assets/vizion-logo-black.png" alt="VIZION Marketing">
+  <a class="btn acc" href="#book">Book a Call →</a>
+</div></div></nav>
+
+<!-- HERO -->
+<header class="wrap hero">
+  <div>
+    <div class="kicker">For owners selling $2,000+ services</div>
+    <h1>Pay only for booked appointments that <em>show up.</em></h1>
+    <p class="sub">No retainer. No long contract. We build the funnel, run the ads, and work every lead, completely hands off. <b>You pay when a qualified prospect is sitting on your calendar,</b> and you see everything happening the whole way. No-shows cost you nothing.</p>
+    <div class="cta">
+      <a class="btn acc big" href="#book">See If Your Market Fits →</a>
+      <div class="micro">30 minutes. No pitch deck. A straight yes or no.</div>
+    </div>
+  </div>
+  <div class="phone-stage">
+    <div class="phone">
+      <div class="ph-top"><span class="who">what your leads experience</span><span class="live">LIVE</span></div>
+      <div class="msgs">
+        <div class="msg sys" style="animation-delay:.3s">Lead submits your form · 2:14 PM</div>
+        <div class="msg out" style="animation-delay:.8s">Hey Mike, just saw your request come through. Quick one so we quote you right: is this for your primary home?<span class="t">2:15 PM · 58 seconds later</span></div>
+        <div class="msg in" style="animation-delay:1.5s">wow that was fast. yes it is<span class="t">2:19 PM</span></div>
+        <div class="msg out" style="animation-delay:2.1s">Perfect. Grab whatever time works here, the estimate is free either way.<span class="t">2:19 PM</span></div>
+        <div class="msg sys" style="animation-delay:2.7s">Appointment booked · 2:22 PM · your phone pings</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- VSL SLOT: uncomment when the video is recorded. Drop the mp4/embed inside .vsl-frame.
+<section class="wrap" style="padding:10px 0 50px">
+  <div style="max-width:760px;margin:0 auto;border:1.5px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:10px 12px 0 var(--accent-soft);background:#000" class="vsl-frame">
+    VIDEO EMBED HERE
+  </div>
+  <div class="micro" style="text-align:center">→ 90 seconds: watch the machine book a calendar in real time</div>
+</section>
+-->
+
+<!-- TICKER -->
+<div class="ticker"><div class="in">
+  <span>NO RETAINER</span><b>✦</b><span>PAY PER SHOW</span><b>✦</b><span>NO-SHOWS COST $0</span><b>✦</b><span>QUALIFIED, IN WRITING</span><b>✦</b><span>45-DAY GUARANTEE</span><b>✦</b><span>MONTH TO MONTH</span><b>✦</b>
+  <span>NO RETAINER</span><b>✦</b><span>PAY PER SHOW</span><b>✦</b><span>NO-SHOWS COST $0</span><b>✦</b><span>QUALIFIED, IN WRITING</span><b>✦</b><span>45-DAY GUARANTEE</span><b>✦</b><span>MONTH TO MONTH</span><b>✦</b>
+</div></div>
+
+<!-- 01 OLD WAY vs NEW -->
+<section class="sec wrap rv">
+  <div class="num">01</div>
+  <div class="pad">
+    <div class="eyebrow">Why this exists</div>
+    <h2>You've heard the agency pitch. <em>It always ends the same.</em></h2>
+    <div class="ledger">
+      <div class="col old">
+        <div class="cap">The usual deal</div>
+        <div class="li">$3,000 a month before any proof</div>
+        <div class="li">"Leads" dumped in a spreadsheet you chase</div>
+        <div class="li">"Qualified" means whatever they say it means</div>
+        <div class="li">90-day contract to find out it doesn't work</div>
+      </div>
+      <div class="col new">
+        <div class="cap">This deal</div>
+        <div class="li">One setup fee, then <b>you pay per appointment that shows</b></div>
+        <div class="li">Prospects land <b>on your calendar</b>, confirmed and reminded</div>
+        <div class="li">"Qualified" <b>defined in writing before launch</b></div>
+        <div class="li">Month to month. <b>We keep you by performing.</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW -->
+<section class="sec wrap rv">
+  <div class="num">02</div>
+  <div class="pad">
+    <div class="eyebrow">How it works</div>
+    <h2>Three steps. You show up for <em>one of them.</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="sn">1</div>
+        <div><div class="tag">Week one</div><h3>We build your machine</h3><p>Ads written, landing page built, follow-up system wired. <b>You approve it, we launch it.</b> You touch none of it.</p></div>
+      </div>
+      <div class="step">
+        <div class="sn">2</div>
+        <div><div class="tag">Always on</div><h3>Your calendar fills itself</h3><p>Every prospect answers qualifying questions before they can book. Spam, solicitors, and tire kickers get filtered out. <b>Real buyers land on your calendar,</b> confirmed and reminded.</p></div>
+      </div>
+      <div class="step">
+        <div class="sn">3</div>
+        <div><div class="tag">Weekly</div><h3>You pay per show. That's it.</h3><p>A flat fee per appointment that showed and matched your criteria. <b>Nobody shows, you owe nothing that week.</b> Cancel anytime.</p></div>
+      </div>
+    </div>
+    <div class="cta-row"><a class="btn big" href="#book">See If Your Market Fits →</a><div class="micro">Pricing for your industry quoted on the call, in writing.</div></div>
+  </div>
+</section>
+
+<!-- 03 CONTRACT + RECEIPT -->
+<section class="sec wrap rv">
+  <div class="num">03</div>
+  <div class="pad">
+    <div class="eyebrow">No fine-print games</div>
+    <h2>"Qualified" gets defined <em>in writing, on day one.</em></h2>
+    <p class="sub">Most agencies keep that word fuzzy so every name counts. We lock it into your agreement before launch, so an invoice is never an argument.</p>
+    <div class="contract">
+      <div class="head"><span>Your agreement · excerpt</span><span>§ Qualification</span></div>
+      <div class="clause"><div class="cn">§1.1</div><div class="cd"><b>Billed:</b> prospect showed up, matched the criteria we set together (budget, timeline, need), and was a real potential buyer.</div></div>
+      <div class="clause"><div class="cn">§1.2</div><div class="cd"><b>Never billed:</b> no-shows, spam, solicitors, competitors, wrong numbers. Verified before you're charged.</div></div>
+      <div class="clause"><div class="cn">§1.3</div><div class="cd"><b>Locked:</b> the definition cannot change mid-campaign, in either direction. Day one's agreement is what gets billed.</div></div>
+    </div>
+    <div class="receipt-stage">
+      <div class="receipt">
+        <div class="rh">VIZION · WEEKLY STATEMENT</div>
+        <div class="li"><span>Qualified appointments, showed</span><span>3</span></div>
+        <div class="li zero"><span>No-show, Tuesday 2 PM</span><span>$0</span></div>
+        <div class="li zero"><span>Solicitor, filtered</span><span>$0</span></div>
+        <div class="tot"><span>YOU PAY FOR</span><span>3 SHOWS</span></div>
+        <div class="note">A week that books nothing bills nothing. That's the whole model.</div>
+        <div class="bars"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPEED BAND -->
+<div class="band rv">
+  <div class="wrap">
+    <div class="eyebrow">Why prospects actually show</div>
+    <h2>Speed wins deals. Ours answers in <em>60 seconds.</em></h2>
+    <div class="bigstat">
+      <div class="b">21×</div>
+      <div class="d">A lead contacted inside 5 minutes converts at roughly <b>21 times the rate</b> of one contacted at 30 minutes. Ours never waits five. Every lead gets a text back <b>within a minute</b>, automatically.</div>
+    </div>
+    <div class="mini-stats">
+      <div class="ms"><div class="v">100 days</div><div class="k">of follow-up on every stalled lead, until they book or say no</div></div>
+      <div class="ms"><div class="v">Every appt</div><div class="k">confirmed, reminded, rebooked on reschedule</div></div>
+      <div class="ms"><div class="v">Our pay</div><div class="k">rides on your show rate, so reminders never miss</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 04 FIT -->
+<section class="sec wrap rv">
+  <div class="num">04</div>
+  <div class="pad">
+    <div class="eyebrow">Who this is for</div>
+    <h2>This only works for a <em>specific kind</em> of business.</h2>
+    <div class="fit">
+      <div class="col yes">
+        <div class="cap">A fit</div>
+        <ul>
+          <li><b>$2,000+ per sale.</b> Real tickets make the math easy.</li>
+          <li><b>Room for 10+ appointments a month.</b> You can take the work.</li>
+          <li><b>You close in front of real buyers.</b> We fill the calendar. You sell.</li>
+          <li><b>Done depending on referrals.</b> You want pipeline you control.</li>
+        </ul>
+      </div>
+      <div class="col no">
+        <div class="cap">Not a fit</div>
+        <ul>
+          <li>Tickets under $2,000. The math doesn't work for you. We'll say so.</li>
+          <li>No capacity. Appointments you can't take are money burned.</li>
+          <li>Wanting a lead list to chase. We book calendars, not spreadsheets.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 PROOF -->
+<section class="sec wrap rv">
+  <div class="num">05</div>
+  <div class="pad">
+    <div class="eyebrow">Proof, the honest version</div>
+    <h2>One real case study. <em>The rest of the risk is ours.</em></h2>
+    <div class="proof">
+      <div class="big">$25<small>per lead · 55 leads · 10 weeks</small></div>
+      <div>
+        <p>Fifty-five leads in ten weeks for a Florida service business at about $25 each, month after month, on this exact machine. <b>That's the only case study we claim, because it's the only one that's real.</b> You won't see a wall of borrowed logos here.</p>
+        <p>What you get instead is a pricing model where <b>we don't make money unless prospects show up on your calendar.</b> When the builder carries the risk, you don't take anything on faith. And you'll feel it yourself: book below and watch how fast the confirmation hits your phone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE STAMP BAND -->
+<div class="guar-band rv">
+  <div class="wrap guar-grid">
+    <div>
+      <h2>3 qualified appointments in your first 45 days, or the setup fee comes back.</h2>
+      <p class="sub">The clock starts the day your ads go live, not the day you sign. Ad spend goes to the platform, never through us. Month to month, cancel anytime.</p>
+      <div class="cta-row"><a class="btn big" href="#book">See If Your Market Fits →</a></div>
+    </div>
+    <div class="stamp">Setup fee<br>returned<br>· 45 days ·<br>in writing</div>
+  </div>
+</div>
+
+<!-- 06 CALL -->
+<section class="sec wrap rv">
+  <div class="num">06</div>
+  <div class="pad">
+    <div class="eyebrow">Before you book</div>
+    <h2>What actually happens on <em>the call.</em></h2>
+    <div class="callsteps">
+      <div class="cs"><div class="n">1</div><div class="d"><b>We look at your market together.</b> Your service, your area, your ticket size. About five minutes.</div></div>
+      <div class="cs"><div class="n">2</div><div class="d"><b>You get a straight answer.</b> If your market or ticket doesn't fit, you hear it on this call and we part as friends. We only get paid when appointments show, so signing a bad fit costs us, not you.</div></div>
+      <div class="cs"><div class="n">3</div><div class="d"><b>If it fits, you get the numbers.</b> Setup, per-appointment pricing for your industry, and the guarantee, all in writing. You decide from there.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 FAQ -->
+<section class="sec wrap rv">
+  <div class="num">07</div>
+  <div class="pad">
+    <div class="eyebrow">Owners always ask</div>
+    <h2>Fair questions, <em>straight answers.</em></h2>
+    <div class="faq">
+      <details>
+        <summary>What does it cost?</summary>
+        <div class="a">A one-time setup fee, then a flat fee per qualified appointment that shows, priced by industry. No retainer, no percentage of your revenue. Exact numbers get quoted on the call and locked in writing, and they don't change mid-campaign.</div>
+      </details>
+      <details>
+        <summary>Who pays for the ads?</summary>
+        <div class="a">You fund your own ad account and every dollar goes straight to the ad platform. None of it passes through us. Your money buys ads. Our fee is earned per show.</div>
+      </details>
+      <details>
+        <summary>What if nobody shows?</summary>
+        <div class="a">You pay nothing that week. And if we don't put 3 qualified appointments on your calendar in the first 45 days of live ads, the setup fee comes back. We carry the performance risk. That's the point of the model.</div>
+      </details>
+      <details>
+        <summary>Am I locked into a contract?</summary>
+        <div class="a">No. Month to month, cancel anytime with written notice. We keep clients by performing, not by trapping them in paper.</div>
+      </details>
+      <details>
+        <summary>How fast do we launch?</summary>
+        <div class="a">Your funnel, ads, and follow-up system are typically built within a week of kickoff. Once you approve everything, ads go live and the guarantee clock starts that day.</div>
+      </details>
+      <details>
+        <summary>Will I actually know what's going on?</summary>
+        <div class="a">Always. You get a weekly plain-English report, no jargon, plus a live dashboard showing every lead, every appointment, and every dollar of ad spend in real time. Hands off never means in the dark.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section class="book wrap rv" id="book">
+  <h2>Pick a time. <em>That's the whole ask.</em></h2>
+  <p class="sub">30 minutes. If your market doesn't fit, we'll say so inside the first ten, and you keep the rest of your half hour.</p>
+  <div class="cal-frame">
+    <iframe src="https://api.leadconnectorhq.com/widget/booking/4kZjJ6RtIF0ZVq0owQr1" title="Book your call" loading="lazy"></iframe>
+  </div>
+</section>
+
+<footer>VIZION MARKETING · WE GET PAID WHEN QUALIFIED PROSPECTS SHOW UP · THAT'S THE WHOLE MODEL</footer>
+
+<script>
+  const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')}),{threshold:.1});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+  setTimeout(()=>document.querySelectorAll('.rv').forEach(el=>el.classList.add('in')),900);
+</script>
+</body>
+</html>

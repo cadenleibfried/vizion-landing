@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIZION | You're Booked</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,700;0,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f4ee; --paper2:#efece3; --ink:#101317;
+    --dim:#565b63; --faint:#8a8f98;
+    --line:rgba(16,19,23,.12); --line-strong:rgba(16,19,23,.25);
+    --accent:#5b4ee8; --accent-ink:#4638c9; --accent-soft:rgba(91,78,232,.09);
+    --good:#178a4c;
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Schibsted Grotesk",-apple-system,Helvetica,Arial,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+  ::selection{background:var(--accent);color:#fff}
+
+  .top{border-bottom:1px solid var(--line)}
+  .top .row{display:flex;align-items:center;justify-content:center;padding:16px 0}
+  .brand{font-family:var(--mono);font-weight:600;letter-spacing:.22em;font-size:14px}
+  .brand em{font-style:normal;color:var(--accent)}
+  .logo{height:38px;display:block;margin:0 auto}
+
+  .hero{padding:70px 0 26px;text-align:center}
+  .check{width:74px;height:74px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:34px;margin:0 auto 26px;box-shadow:8px 10px 0 var(--accent-soft)}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:48px;line-height:1.05;letter-spacing:-.01em}
+  .hero h1 em{font-style:italic;color:var(--accent)}
+  .hero .sub{margin:18px auto 0;max-width:520px;font-size:18px;color:var(--dim)}
+  .hero .sub b{color:var(--ink)}
+
+  .watch{margin:38px auto 0;max-width:520px;background:#fff;border:1.5px solid var(--ink);border-radius:14px;padding:24px 28px;
+    box-shadow:10px 12px 0 var(--accent-soft);text-align:left}
+  .watch .cap{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
+  .watch p{font-size:15.5px;color:var(--dim)}
+  .watch p b{color:var(--ink)}
+
+  .sec{padding:56px 0 0}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:12px;text-align:center}
+  .sec h2{font-family:var(--serif);font-weight:600;font-size:32px;text-align:center}
+  .steps{margin:30px auto 0;max-width:600px}
+  .cs{display:grid;grid-template-columns:56px 1fr;gap:18px;padding:18px 0;border-bottom:1px dashed var(--line)}
+  .cs:last-child{border-bottom:none}
+  .cs .n{font-family:var(--serif);font-size:26px;font-weight:700;color:var(--accent)}
+  .cs .d{font-size:16px;color:var(--dim)}
+  .cs .d b{color:var(--ink)}
+
+  .guar{margin:56px auto 0;max-width:600px;background:var(--accent);color:#fff;border-radius:14px;padding:28px 32px;text-align:center}
+  .guar .t{font-family:var(--serif);font-size:22px;font-weight:600;line-height:1.25}
+  .guar .s{font-size:14.5px;color:rgba(255,255,255,.85);margin-top:8px}
+
+  footer{border-top:1.5px solid var(--ink);margin-top:64px;padding:24px 0;text-align:center;font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.06em;line-height:2}
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="row"><img class="logo" src="assets/vizion-logo-black.png" alt="VIZION Marketing"></div></nav>
+
+<section class="hero wrap">
+  <div class="check">✓</div>
+  <h1>You're booked. <em>Smart move.</em></h1>
+  <p class="sub">Calendar invite is on its way to your email. <b>The call is 30 minutes,</b> and you'll leave with a straight answer either way.</p>
+  <div class="watch">
+    <div class="cap">Watch your phone right now</div>
+    <p>A confirmation text is hitting your phone <b>within the next 60 seconds.</b> That's not a gimmick, that's the exact machine your leads would get. You just became your own proof.</p>
+  </div>
+</section>
+
+<section class="sec wrap">
+  <div class="eyebrow">What happens next</div>
+  <h2>Three things, in order.</h2>
+  <div class="steps">
+    <div class="cs"><div class="n">1</div><div class="d"><b>Check your email.</b> The calendar invite has the meeting link. Accept it so it's locked on your side.</div></div>
+    <div class="cs"><div class="n">2</div><div class="d"><b>Take 60 seconds to think about two numbers:</b> your average job size, and how many more jobs a month you could actually take. That's all the prep the call needs.</div></div>
+    <div class="cs"><div class="n">3</div><div class="d"><b>Show up.</b> Five minutes on your market, a straight yes or no on fit, and if it's a yes, your exact numbers in writing. No pressure, no 45-slide deck.</div></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="guar">
+    <div class="t">3 qualified appointments in your first 45 days, or the setup fee comes back.</div>
+    <div class="s">That's not a slogan, it goes in your agreement. You'll see it in writing on the call.</div>
+  </div>
+</div>
+
+<footer>VIZION MARKETING · YOUR VISION, RUNNING ITSELF, IN PLAIN SIGHT<br>WE GET PAID WHEN QUALIFIED PROSPECTS SHOW UP</footer>
+</body>
+</html>
