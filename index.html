@@ -22,7 +22,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-  .wrap{max-width:1040px;margin:0 auto;padding:0 24px;position:relative}
+  .wrap{max-width:1150px;margin:0 auto;padding:0 24px;position:relative}
   ::selection{background:var(--accent);color:#fff}
 
   /* reveal */
@@ -44,12 +44,12 @@
   .micro{margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--faint)}
 
   /* hero */
-  .hero{padding-top:76px;padding-bottom:40px;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+  .hero{padding-top:76px;padding-bottom:40px;display:grid;grid-template-columns:1.22fr .78fr;gap:48px;align-items:center}
   .kicker{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--accent);border:1.5px solid var(--accent);border-radius:4px;padding:7px 12px;margin-bottom:26px}
   .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(31px,8.5vw,62px);line-height:1.02;letter-spacing:-.015em}
   .hero h1 em{font-style:italic;color:var(--accent)}
-  .hero .sub{margin-top:24px;max-width:520px;font-size:clamp(15.5px,4.4vw,18.5px);color:var(--dim)}
+  .hero .sub{margin-top:24px;max-width:560px;font-size:clamp(15.5px,4.4vw,18.5px);color:var(--dim)}
   .hero .sub b{color:var(--ink);font-weight:700}
   .hero .cta{margin-top:32px}
 
@@ -203,6 +203,12 @@
 
   footer{border-top:1.5px solid var(--ink);margin-top:64px;padding:26px 0;text-align:center;font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.06em}
 
+  /* big-monitor tier: the page grows into large screens instead of floating in margin */
+  @media(min-width:1700px){
+    .wrap{max-width:1280px}
+    .hero h1{font-size:70px}
+    .phone{width:370px}
+  }
   /* desktop keeps the original full-width feel; gutters are for small screens only */
   @media(min-width:861px){
     .hero.wrap,.sec.wrap,.book.wrap{padding-left:0;padding-right:0}
