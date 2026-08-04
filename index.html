@@ -44,12 +44,12 @@
   .micro{margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--faint)}
 
   /* hero */
-  .hero{padding:76px 0 40px;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+  .hero{padding-top:76px;padding-bottom:40px;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
   .kicker{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--accent);border:1.5px solid var(--accent);border-radius:4px;padding:7px 12px;margin-bottom:26px}
-  .hero h1{font-family:var(--serif);font-weight:600;font-size:62px;line-height:1.02;letter-spacing:-.015em}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(31px,8.5vw,62px);line-height:1.02;letter-spacing:-.015em}
   .hero h1 em{font-style:italic;color:var(--accent)}
-  .hero .sub{margin-top:24px;max-width:520px;font-size:18.5px;color:var(--dim)}
+  .hero .sub{margin-top:24px;max-width:520px;font-size:clamp(15.5px,4.4vw,18.5px);color:var(--dim)}
   .hero .sub b{color:var(--ink);font-weight:700}
   .hero .cta{margin-top:32px}
 
@@ -77,11 +77,11 @@
   @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
   /* section scaffolding */
-  .sec{padding:84px 0 0;position:relative}
+  .sec{padding-top:84px;position:relative}
   .num{position:absolute;top:52px;left:-8px;font-family:var(--serif);font-size:120px;font-weight:700;color:transparent;
     -webkit-text-stroke:1.5px var(--line-strong);line-height:1;user-select:none}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:14px}
-  .sec h2{font-family:var(--serif);font-weight:600;font-size:42px;line-height:1.06;letter-spacing:-.01em;max-width:640px}
+  .sec h2{font-family:var(--serif);font-weight:600;font-size:clamp(25px,6.6vw,42px);line-height:1.06;letter-spacing:-.01em;max-width:640px}
   .sec h2 em{font-style:italic;color:var(--accent)}
   .sec .sub{color:var(--dim);font-size:17px;margin-top:14px;max-width:560px}
   .pad{padding-left:96px}
@@ -137,11 +137,11 @@
   /* dark band generic */
   .band{background:var(--ink);color:var(--paper);margin-top:84px;padding:76px 0}
   .band .eyebrow{color:var(--accent)}
-  .band h2{font-family:var(--serif);font-weight:600;font-size:42px;line-height:1.06;max-width:660px}
+  .band h2{font-family:var(--serif);font-weight:600;font-size:clamp(25px,6.6vw,42px);line-height:1.06;max-width:660px}
   .band h2 em{font-style:italic;color:var(--accent)}
   .band .sub{color:var(--dim-on-ink);font-size:17px;margin-top:14px;max-width:560px}
   .bigstat{display:flex;gap:36px;align-items:baseline;margin-top:40px;flex-wrap:wrap}
-  .bigstat .b{font-family:var(--serif);font-size:96px;font-weight:700;color:var(--accent);line-height:1}
+  .bigstat .b{font-family:var(--serif);font-size:clamp(50px,14vw,96px);font-weight:700;color:var(--accent);line-height:1}
   .bigstat .d{max-width:380px;color:var(--dim-on-ink);font-size:16.5px}
   .bigstat .d b{color:var(--paper)}
   .mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:var(--line-inv);border:1px solid var(--line-inv);border-radius:12px;overflow:hidden;margin-top:44px}
@@ -164,7 +164,7 @@
   /* proof */
   .proof{margin-top:44px;display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start;background:#fff;
     border:1.5px solid var(--ink);border-radius:14px;padding:38px 42px;box-shadow:10px 12px 0 var(--accent-soft)}
-  .proof .big{font-family:var(--serif);font-weight:700;font-size:74px;line-height:.95;color:var(--accent)}
+  .proof .big{font-family:var(--serif);font-weight:700;font-size:clamp(46px,12vw,74px);line-height:.95;color:var(--accent)}
   .proof .big small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--faint);margin-top:10px;text-transform:uppercase}
   .proof p{font-size:16px;color:var(--dim)}
   .proof p b{color:var(--ink)}
@@ -173,7 +173,7 @@
   /* stamp band */
   .guar-band{background:var(--accent);color:#fff;margin-top:84px;padding:70px 0}
   .guar-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
-  .guar-band h2{font-family:var(--serif);font-weight:600;font-size:40px;line-height:1.08;max-width:600px}
+  .guar-band h2{font-family:var(--serif);font-weight:600;font-size:clamp(24px,6.4vw,40px);line-height:1.08;max-width:600px}
   .guar-band .sub{color:rgba(255,255,255,.85);font-size:17px;margin-top:14px;max-width:540px}
   .guar-band .btn{background:#fff;border-color:#fff;color:var(--accent-ink)}
   .stamp{width:170px;height:170px;border:3px dashed rgba(255,255,255,.85);border-radius:50%;display:flex;align-items:center;justify-content:center;
@@ -194,8 +194,8 @@
   .faq .a{padding:0 0 18px;font-size:15.5px;color:var(--dim)}
 
   /* booking */
-  .book{padding:84px 0 30px;text-align:center}
-  .book h2{font-family:var(--serif);font-weight:600;font-size:46px;letter-spacing:-.01em}
+  .book{padding-top:84px;padding-bottom:30px;text-align:center}
+  .book h2{font-family:var(--serif);font-weight:600;font-size:clamp(26px,7vw,46px);letter-spacing:-.01em}
   .book h2 em{font-style:italic;color:var(--accent)}
   .book .sub{color:var(--dim);font-size:17px;margin:14px auto 30px;max-width:520px}
   .cal-frame{max-width:780px;margin:0 auto;border:1.5px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:10px 12px 0 var(--accent-soft)}
@@ -225,7 +225,7 @@
     .hero{padding-top:36px;gap:38px}
     .hero h1{font-size:33px;letter-spacing:-.01em}
     .hero .sub{font-size:16.5px}
-    .sec{padding:64px 0 0}
+    .sec{padding-top:64px}
     .sec h2,.band h2{font-size:26px}
     .sec .sub,.band .sub{font-size:15.5px}
     .guar-band h2{font-size:25px}
